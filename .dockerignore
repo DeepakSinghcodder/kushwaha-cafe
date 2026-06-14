@@ -1,0 +1,14 @@
+.git
+.gitignore
+.mvn
+.vscode
+target/
+mvnw
+mvnw.cmd
+*.db
+*.log
+Dockerfile
+README.md
+README_DEPLOY.md
+pom.xml.original
+HELP.md
