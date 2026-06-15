@@ -268,6 +268,105 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ----------------- 3D INTERACTIVE TILT ENGINE -----------------
+    // 1. Global Viewport Cursor Parallax (for Hero Section)
+    const hero = document.querySelector('.hero');
+    const heroContent = document.querySelector('.hero-content');
+    const heroFloatingItems = document.querySelectorAll('.hero-floating');
+
+    if (hero && heroContent) {
+        document.addEventListener('mousemove', (e) => {
+            // Calculate mouse position relative to center of screen (normalized from -1 to 1)
+            const mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+            const mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+            // Tilt the main hero content card (subtle rotation up to 10 deg)
+            const tiltX = -mouseY * 8;
+            const tiltY = mouseX * 8;
+            
+            // Limit FPS using requestAnimationFrame
+            requestAnimationFrame(() => {
+                heroContent.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+                
+                // Parallax shift for floating elements (different coefficients for depth feeling)
+                heroFloatingItems.forEach(item => {
+                    let depth = 20;
+                    if (item.classList.contains('cup')) depth = 30;
+                    if (item.classList.contains('bean-1')) depth = -20;
+                    if (item.classList.contains('bean-2')) depth = 40;
+                    if (item.classList.contains('leaf-1')) depth = -25;
+                    if (item.classList.contains('leaf-2')) depth = 12;
+
+                    const moveX = mouseX * depth;
+                    const moveY = mouseY * depth;
+                    const rotate = mouseX * (depth / 2);
+
+                    item.style.transform = `translate3d(${moveX}px, ${moveY}px, 60px) rotate(${rotate}deg)`;
+                });
+            });
+        });
+    }
+
+    // 2. Card Hover 3D Tilt Effect (Feature Cards and Menu Cards)
+    const tiltCards = document.querySelectorAll('.feature-card, .menu-card');
+    
+    tiltCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            
+            // Mouse coordinate relative to card bounding box
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Normalized offset from card center (-1 to 1)
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const normalizedX = (x - centerX) / centerX;
+            const normalizedY = (y - centerY) / centerY;
+            
+            // Calculate tilt rotation (up to 12 degrees)
+            const rotateX = -normalizedY * 10;
+            const rotateY = normalizedX * 10;
+            
+            requestAnimationFrame(() => {
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                
+                // Tilt card children pop-out effect
+                const img = card.querySelector('.menu-img');
+                const icon = card.querySelector('.feature-icon');
+                const title = card.querySelector('h3, h4');
+                const desc = card.querySelector('p, .menu-desc');
+                const action = card.querySelector('.menu-price-action');
+
+                if (img) img.style.transform = `translateZ(30px) scale(1.03)`;
+                if (icon) icon.style.transform = `translateZ(50px) scale(1.08)`;
+                if (title) title.style.transform = `translateZ(40px)`;
+                if (desc) desc.style.transform = `translateZ(25px)`;
+                if (action) action.style.transform = `translateZ(45px)`;
+            });
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            requestAnimationFrame(() => {
+                // Smoothly snap back to center
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                
+                // Reset card children
+                const img = card.querySelector('.menu-img');
+                const icon = card.querySelector('.feature-icon');
+                const title = card.querySelector('h3, h4');
+                const desc = card.querySelector('p, .menu-desc');
+                const action = card.querySelector('.menu-price-action');
+
+                if (img) img.style.transform = `translateZ(20px) scale(1)`;
+                if (icon) icon.style.transform = `translateZ(40px) scale(1)`;
+                if (title) title.style.transform = `translateZ(30px)`;
+                if (desc) desc.style.transform = `translateZ(20px)`;
+                if (action) action.style.transform = `translateZ(40px)`;
+            });
+        });
+    });
+
     // Initialize Menu page cart on load
     updateCartBadge();
     renderCart();
