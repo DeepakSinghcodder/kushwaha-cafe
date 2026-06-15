@@ -1332,6 +1332,20 @@ footer {
     
     .nav-links {
         display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: rgba(42, 26, 16, 0.98);
+        padding: 1.5rem;
+        border-bottom: 2px solid var(--accent);
+        gap: 1.5rem;
+        z-index: 999;
+    }
+    
+    .nav-links.active {
+        display: flex;
     }
     
     .mobile-menu-btn {

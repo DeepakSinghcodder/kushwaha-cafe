@@ -609,6 +609,21 @@ document.addEventListener('DOMContentLoaded', () => {
     new ParticleSystem('hero-particles', 'rgba(212, 175, 55, 0.3)', 45);
     new ParticleSystem('stats-particles', 'rgba(212, 175, 55, 0.25)', 35);
 
+    // ----------------- MOBILE MENU TOGGLE -----------------
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-xmark');
+            }
+        });
+    }
+
     // Initialize Menu page cart on load
     updateCartBadge();
     renderCart();

@@ -22,6 +22,10 @@
                 <i class="fa-solid fa-mug-hot"></i> Kushwaha<span>Cafe</span>
             </a>
             
+            <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            
             <ul class="nav-links">
                 <li><a th:href="@{/}" th:class="${currentURI == '/'} ? 'active'">Home</a></li>
                 <li><a th:href="@{/menu}" th:class="${currentURI == '/menu'} ? 'active'">Menu</a></li>
