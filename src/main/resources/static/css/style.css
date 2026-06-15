@@ -1173,6 +1173,7 @@ footer {
     padding: 3rem 0 1.5rem 0;
     margin-top: 4rem;
     border-top: 2px solid var(--accent);
+    width: 100%;
 }
 
 .footer-grid {
