@@ -82,6 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cartGstEl) cartGstEl.textContent = 'INR 0.00';
             if (cartTotalEl) cartTotalEl.textContent = 'INR 0.00';
             if (checkoutBtn) checkoutBtn.disabled = true;
+            
+            // Hide Mobile Cart Bar
+            const mobileCartBar = document.getElementById('mobile-cart-bar');
+            if (mobileCartBar) mobileCartBar.classList.remove('active');
             return;
         }
         
@@ -118,6 +122,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cartGstEl) cartGstEl.textContent = `INR ${gst.toFixed(2)}`;
         if (cartTotalEl) cartTotalEl.textContent = `INR ${total.toFixed(2)}`;
         if (checkoutBtn) checkoutBtn.disabled = false;
+        
+        // Update Mobile Cart Bar
+        const mobileCartBar = document.getElementById('mobile-cart-bar');
+        const mobileCartCountVal = document.getElementById('mobile-cart-count-val');
+        const mobileCartTotalVal = document.getElementById('mobile-cart-total-val');
+        
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        
+        if (mobileCartBar) {
+            if (totalItems > 0) {
+                mobileCartBar.classList.add('active');
+                if (mobileCartCountVal) {
+                    mobileCartCountVal.textContent = `${totalItems} ${totalItems === 1 ? 'Item' : 'Items'}`;
+                }
+                if (mobileCartTotalVal) {
+                    mobileCartTotalVal.textContent = `INR ${total.toFixed(2)}`;
+                }
+            } else {
+                mobileCartBar.classList.remove('active');
+            }
+        }
         
         // Bind item control events
         document.querySelectorAll('.inc-qty').forEach(btn => {

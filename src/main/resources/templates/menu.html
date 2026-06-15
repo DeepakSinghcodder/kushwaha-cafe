@@ -144,8 +144,32 @@
                 });
             });
         });
+
+        // Scroll to cart panel on mobile
+        const mobileCheckoutBtn = document.getElementById('mobile-cart-checkout-btn');
+        if (mobileCheckoutBtn) {
+            mobileCheckoutBtn.addEventListener('click', () => {
+                const cartPanel = document.querySelector('.cart-panel');
+                if (cartPanel) {
+                    cartPanel.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
     });
 </script>
+
+<!-- Floating Mobile Cart Bar -->
+<div class="mobile-cart-bar" id="mobile-cart-bar">
+    <div class="mobile-cart-info">
+        <span class="mobile-cart-icon">🛒</span>
+        <span class="mobile-cart-count" id="mobile-cart-count-val">0 Items</span>
+        <span class="mobile-cart-separator">•</span>
+        <span class="mobile-cart-total" id="mobile-cart-total-val">INR 0.00</span>
+    </div>
+    <button class="mobile-cart-checkout-btn" id="mobile-cart-checkout-btn">
+        View Cart <i class="fa-solid fa-arrow-right"></i>
+    </button>
+</div>
 </main>
 </body>
 </html>

@@ -1621,3 +1621,101 @@ footer {
     z-index: 1;
     display: block;
 }
+
+/* 8. Floating Mobile Cart Bar Styles */
+.mobile-cart-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 5%;
+    right: 5%;
+    width: 90%;
+    background: rgba(42, 26, 16, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 16px;
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 
+                0 0 15px rgba(212, 175, 55, 0.15);
+    z-index: 999;
+    transform: translateY(120px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: var(--light);
+}
+
+.mobile-cart-bar.active {
+    transform: translateY(0);
+}
+
+.mobile-cart-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.mobile-cart-count {
+    color: var(--accent);
+}
+
+.mobile-cart-separator {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.mobile-cart-total {
+    font-weight: 700;
+}
+
+.mobile-cart-checkout-btn {
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    padding: 0.55rem 1.1rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: var(--transition);
+}
+
+.mobile-cart-checkout-btn:hover {
+    background: var(--light);
+    color: var(--primary);
+}
+
+/* Hide scrollbar in Category Navigation */
+.category-nav::-webkit-scrollbar {
+    display: none;
+}
+.category-nav {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Responsive Menu Adjustments for Mobile */
+@media (max-width: 768px) {
+    .menu-sections {
+        padding: 1.2rem !important;
+        border-radius: 16px !important;
+    }
+    .category-section h3 {
+        font-size: 1.6rem !important;
+        margin-bottom: 1rem !important;
+    }
+    .category-nav {
+        margin-bottom: 1.5rem !important;
+    }
+}
+
+@media (min-width: 901px) {
+    .mobile-cart-bar {
+        display: none !important;
+    }
+}
