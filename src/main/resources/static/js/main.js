@@ -307,8 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Card Hover 3D Tilt Effect (Feature Cards and Menu Cards)
-    const tiltCards = document.querySelectorAll('.feature-card, .menu-card');
+    // 2. Card Hover 3D Tilt Effect (Feature Cards, Menu Cards, and Stat Cards)
+    const tiltCards = document.querySelectorAll('.feature-card, .menu-card, .stat-card');
     
     tiltCards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
@@ -407,12 +407,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 4. 3D Scroll Reveal using IntersectionObserver
+    const animateStats = () => {
+        const counters = document.querySelectorAll('.stat-num');
+        counters.forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-val'));
+            const duration = 2000; // 2 seconds
+            let startTime = null;
+            
+            const step = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                
+                // Smooth easeOutQuad easing
+                const easeOutQuad = (x) => x * (2 - x);
+                const currentVal = easeOutQuad(progress) * target;
+                
+                if (target % 1 === 0) {
+                    counter.textContent = Math.floor(currentVal);
+                } else {
+                    counter.textContent = currentVal.toFixed(1);
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    counter.textContent = target; // Ensure exact final value
+                }
+            };
+            
+            requestAnimationFrame(step);
+        });
+    };
+
     const revealElements = document.querySelectorAll('.scroll-reveal-3d');
     if (revealElements.length > 0) {
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('revealed');
+                    if (entry.target.classList.contains('stats-section')) {
+                        animateStats();
+                    }
                     revealObserver.unobserve(entry.target);
                 }
             });
