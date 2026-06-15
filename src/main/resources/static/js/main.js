@@ -460,6 +460,124 @@ document.addEventListener('DOMContentLoaded', () => {
         revealElements.forEach(el => revealObserver.observe(el));
     }
 
+    // ----------------- Global Body Parallax Shift -----------------
+    document.addEventListener('mousemove', (e) => {
+        const mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+        const mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+        
+        // Shift background position slightly in the opposite direction
+        const moveX = -mouseX * 12;
+        const moveY = -mouseY * 12;
+        
+        requestAnimationFrame(() => {
+            document.body.style.backgroundPosition = `${moveX}px ${moveY}px`;
+        });
+    });
+
+    // ----------------- Canvas Particle System -----------------
+    class ParticleSystem {
+        constructor(canvasId, particleColor = 'rgba(212, 175, 55, 0.3)', particleCount = 40) {
+            this.canvas = document.getElementById(canvasId);
+            if (!this.canvas) return;
+            this.ctx = this.canvas.getContext('2d');
+            this.color = particleColor;
+            this.particleCount = particleCount;
+            this.particles = [];
+            this.mouse = { x: null, y: null, radius: 120 };
+
+            this.init();
+            this.animate();
+            
+            window.addEventListener('resize', () => this.resize());
+            
+            const parent = this.canvas.parentElement;
+            parent.addEventListener('mousemove', (e) => {
+                const rect = this.canvas.getBoundingClientRect();
+                this.mouse.x = e.clientX - rect.left;
+                this.mouse.y = e.clientY - rect.top;
+            });
+            
+            parent.addEventListener('mouseleave', () => {
+                this.mouse.x = null;
+                this.mouse.y = null;
+            });
+        }
+
+        init() {
+            this.resize();
+            this.particles = [];
+            for (let i = 0; i < this.particleCount; i++) {
+                this.particles.push(this.createParticle(true));
+            }
+        }
+
+        resize() {
+            const rect = this.canvas.parentElement.getBoundingClientRect();
+            this.canvas.width = rect.width;
+            this.canvas.height = rect.height;
+        }
+
+        createParticle(randomY = false) {
+            return {
+                x: Math.random() * this.canvas.width,
+                y: randomY ? Math.random() * this.canvas.height : this.canvas.height + Math.random() * 20,
+                size: Math.random() * 2.5 + 0.8,
+                speedX: Math.random() * 0.8 - 0.4,
+                speedY: -(Math.random() * 0.8 + 0.4),
+                density: Math.random() * 15 + 5,
+                alpha: Math.random() * 0.6 + 0.1
+            };
+        }
+
+        animate() {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            this.particles.forEach((p, idx) => {
+                // Update position
+                p.y += p.speedY;
+                p.x += p.speedX;
+
+                // Reset if out of bounds (top or sides)
+                if (p.y < -10 || p.x < -10 || p.x > this.canvas.width + 10) {
+                    this.particles[idx] = this.createParticle(false);
+                }
+
+                // Mouse interaction (repulsion)
+                if (this.mouse.x !== null && this.mouse.y !== null) {
+                    const dx = this.mouse.x - p.x;
+                    const dy = this.mouse.y - p.y;
+                    const distance = Math.hypot(dx, dy);
+                    
+                    if (distance < this.mouse.radius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (this.mouse.radius - distance) / this.mouse.radius;
+                        const directionX = forceDirectionX * force * p.density * 0.4;
+                        const directionY = forceDirectionY * force * p.density * 0.4;
+                        
+                        p.x -= directionX;
+                        p.y -= directionY;
+                    }
+                }
+
+                // Draw particle
+                this.ctx.beginPath();
+                this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                
+                // Construct color with particle's alpha
+                const colorStr = this.color.replace(/[^,]+(?=\))/, p.alpha.toFixed(2));
+                this.ctx.fillStyle = colorStr;
+                this.ctx.fill();
+            });
+            
+            requestAnimationFrame(() => this.animate());
+        }
+    }
+
+    // Instantiate Particle Systems
+    new ParticleSystem('hero-particles', 'rgba(212, 175, 55, 0.3)', 45);
+    new ParticleSystem('stats-particles', 'rgba(212, 175, 55, 0.25)', 35);
+
     // Initialize Menu page cart on load
     updateCartBadge();
     renderCart();

@@ -34,11 +34,15 @@
 body {
     font-family: var(--font-body);
     background-color: var(--cream);
+    background-image: radial-gradient(rgba(42, 26, 16, 0.05) 1.2px, transparent 1.2px);
+    background-size: 28px 28px;
+    background-position: 0px 0px;
     color: var(--dark);
     line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1522,4 +1526,16 @@ footer {
     color: #CBD5E0;
     transition: transform 0.15s ease-out;
     transform: translateZ(25px);
+}
+
+/* 7. Canvas Particle Overlay Styles */
+.hero-canvas, .stats-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    display: block;
 }
