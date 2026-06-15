@@ -367,6 +367,64 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 3. Custom Follower Cursor Logic
+    const follower = document.querySelector('.custom-cursor-follower');
+    if (follower) {
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let followerX = mouseX;
+        let followerY = mouseY;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            follower.style.opacity = '1';
+        });
+        
+        document.addEventListener('mouseleave', () => {
+            follower.style.opacity = '0';
+        });
+        
+        // Smooth cursor lag animation using linear interpolation (lerp)
+        const updateFollower = () => {
+            const lerpFactor = 0.15;
+            followerX += (mouseX - followerX) * lerpFactor;
+            followerY += (mouseY - followerY) * lerpFactor;
+            
+            follower.style.left = `${followerX}px`;
+            follower.style.top = `${followerY}px`;
+            
+            requestAnimationFrame(updateFollower);
+        };
+        updateFollower();
+        
+        // Custom cursor hovering expansions
+        const hoverElements = document.querySelectorAll('a, button, .feature-card, .menu-card, .add-to-cart-btn, .logo, input, select, textarea');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => follower.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => follower.classList.remove('hovering'));
+        });
+    }
+
+    // 4. 3D Scroll Reveal using IntersectionObserver
+    const revealElements = document.querySelectorAll('.scroll-reveal-3d');
+    if (revealElements.length > 0) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px 0px -60px 0px'
+        });
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+    }
+
     // Initialize Menu page cart on load
     updateCartBadge();
     renderCart();

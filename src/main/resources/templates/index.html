@@ -32,7 +32,7 @@
                 <p style="color: var(--gray);">We craft experiences, not just beverages.</p>
             </div>
 
-            <div class="features-grid">
+            <div class="features-grid scroll-reveal-3d">
                 <div class="feature-card">
                     <span class="feature-icon">☕</span>
                     <h3>Artisanal Brews</h3>
@@ -67,7 +67,7 @@
     <!-- About Section -->
     <section
         style="background-color: var(--light); padding: 5rem 0; border-top: 1px solid var(--cream-dark); border-bottom: 1px solid var(--cream-dark);">
-        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+        <div class="container scroll-reveal-3d" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
             <div>
                 <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=500&auto=format&fit=crop"
                     alt="Cafe Interior"
@@ -96,7 +96,7 @@
                     navigation directions.</p>
             </div>
 
-            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
+            <div class="features-grid scroll-reveal-3d" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
                 <th:block th:if="${not #lists.isEmpty(cafe_locations)}">
                     <div th:each="loc : ${cafe_locations}" class="feature-card"
                         style="text-align: left; padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between;">
@@ -146,7 +146,7 @@
                 <h2>What Our Customers Say</h2>
             </div>
 
-            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div class="features-grid scroll-reveal-3d" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem;">
                 <div class="feature-card" style="padding: 2rem; text-align: left;">
                     <p style="font-style: italic; margin-bottom: 1.5rem; color: var(--dark);">"The hazelnut frappe is
                         absolutely brilliant, and the paneer sandwich was fresh and perfectly grilled. The online order flow
