@@ -1310,25 +1310,107 @@ footer {
     }
 }
 
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+@media (pointer: coarse), (max-width: 768px) {
+    /* Disable 3D cursor follower on touch devices and small screens */
+    .custom-cursor-follower {
+        display: none !important;
+    }
+}
+
 @media (max-width: 768px) {
     header .container {
         padding: 1rem 0;
     }
     
     .nav-links {
-        display: none; /* Can build toggle logic in JS */
+        display: none;
     }
     
     .mobile-menu-btn {
         display: block;
     }
     
+    /* About grid wrap */
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+    
+    /* Hero section responsiveness */
+    .hero {
+        height: auto;
+        min-height: 80vh;
+        padding: 7rem 0 5rem 0;
+    }
+    
     .hero h1 {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
+        line-height: 1.25;
     }
     
     .hero p {
-        font-size: 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .hero-content {
+        padding: 2.2rem 1.2rem !important;
+        margin: 0 1rem;
+        border-radius: 18px !important;
+    }
+    
+    /* Relocate floating elements on mobile so they don't block content */
+    .hero-floating {
+        font-size: 1.8rem !important;
+    }
+    .hero-floating.cup {
+        top: 8%;
+        left: 5%;
+        font-size: 2.2rem !important;
+    }
+    .hero-floating.bean-1 {
+        top: 85%;
+        left: 8%;
+    }
+    .hero-floating.bean-2 {
+        top: 6%;
+        right: 8%;
+    }
+    .hero-floating.leaf-1 {
+        top: 86%;
+        right: 8%;
+    }
+    .hero-floating.leaf-2 {
+        display: none !important;
+    }
+    
+    /* Stats Section mobile scaling */
+    .stats-section {
+        padding: 3.5rem 0;
+    }
+    
+    .stats-grid {
+        gap: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .stat-num {
+        font-size: 2.8rem;
+    }
+    
+    /* Marquee margins */
+    .marquee-container {
+        margin: 2.5rem 0;
+        padding: 0.8rem 0;
     }
 }
 

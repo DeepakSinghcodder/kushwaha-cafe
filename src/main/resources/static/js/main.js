@@ -269,12 +269,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------- 3D INTERACTIVE TILT ENGINE -----------------
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 992;
+
     // 1. Global Viewport Cursor Parallax (for Hero Section)
     const hero = document.querySelector('.hero');
     const heroContent = document.querySelector('.hero-content');
     const heroFloatingItems = document.querySelectorAll('.hero-floating');
 
-    if (hero && heroContent) {
+    if (hero && heroContent && !isTouchDevice) {
         document.addEventListener('mousemove', (e) => {
             // Calculate mouse position relative to center of screen (normalized from -1 to 1)
             const mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
@@ -310,8 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Card Hover 3D Tilt Effect (Feature Cards, Menu Cards, and Stat Cards)
     const tiltCards = document.querySelectorAll('.feature-card, .menu-card, .stat-card');
     
-    tiltCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
+    if (!isTouchDevice) {
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             
             // Mouse coordinate relative to card bounding box
@@ -366,10 +369,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+    }
 
     // 3. Custom Follower Cursor Logic
     const follower = document.querySelector('.custom-cursor-follower');
-    if (follower) {
+    if (follower && !isTouchDevice) {
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let followerX = mouseX;
@@ -461,7 +465,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------- Global Body Parallax Shift -----------------
-    document.addEventListener('mousemove', (e) => {
+    if (!isTouchDevice) {
+        document.addEventListener('mousemove', (e) => {
         const mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
         const mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
         
@@ -473,6 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.backgroundPosition = `${moveX}px ${moveY}px`;
         });
     });
+    }
 
     // ----------------- Canvas Particle System -----------------
     class ParticleSystem {
