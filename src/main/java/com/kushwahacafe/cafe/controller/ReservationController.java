@@ -167,7 +167,7 @@ public class ReservationController {
             name, newRes.getId(), location.getName(), date, slotIn, slotOut, durationHours, hourlyRate, totalCharge, guests, phone,
             (specialRequests != null && !specialRequests.trim().isEmpty()) ? "<p><b>Special Note:</b> " + specialRequests.trim() + "</p>" : ""
         );
-        emailService.sendEmailNotification(email.trim().toLowerCase(), "Table Booking Confirmed - Kushwaha Cafe (ID: KC-RES-" + newRes.getId() + ")", customerEmailHtml);
+        emailService.sendEmailNotificationAsync(email.trim().toLowerCase(), "Table Booking Confirmed - Kushwaha Cafe (ID: KC-RES-" + newRes.getId() + ")", customerEmailHtml);
 
         // Send Email Confirmation to Owner
         String ownerEmailHtml = String.format(
@@ -192,7 +192,7 @@ public class ReservationController {
             "</div>",
             newRes.getId(), location.getName(), date, slotIn, slotOut, durationHours, hourlyRate, totalCharge, name, email, phone
         );
-        emailService.sendEmailNotification("parkease0563@gmail.com", "[NEW RESERVATION ALERT] Table Booked (ID: KC-RES-" + newRes.getId() + ")", ownerEmailHtml);
+        emailService.sendEmailNotificationAsync("parkease0563@gmail.com", "[NEW RESERVATION ALERT] Table Booked (ID: KC-RES-" + newRes.getId() + ")", ownerEmailHtml);
 
         redirectAttributes.addFlashAttribute("flashMessage", "Table reservation confirmed! Check your email for details.");
         redirectAttributes.addFlashAttribute("flashCategory", "success");

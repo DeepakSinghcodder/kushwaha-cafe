@@ -295,7 +295,7 @@ public class OrderController {
                 "</div>",
                 order.getCustomerName(), order.getId(), nowStr, order.getTransactionId(), itemsRows, order.getTotalAmount()
             );
-            emailService.sendEmailNotification(user.getEmail(), "Invoice: Order KC-ORD-" + order.getId() + " Paid successfully!", customerEmailHtml);
+            emailService.sendEmailNotificationAsync(user.getEmail(), "Invoice: Order KC-ORD-" + order.getId() + " Paid successfully!", customerEmailHtml);
 
             // Send Email notification to owner (Admin)
             String ownerEmailHtml = String.format(
@@ -331,7 +331,7 @@ public class OrderController {
                 "</div>",
                 order.getId(), nowStr, order.getCustomerName(), order.getCustomerPhone(), order.getTransactionId(), itemsRows, order.getTotalAmount()
             );
-            emailService.sendEmailNotification("parkease0563@gmail.com", "[NEW ORDER ALERT] Order KC-ORD-" + order.getId() + " Paid!", ownerEmailHtml);
+            emailService.sendEmailNotificationAsync("parkease0563@gmail.com", "[NEW ORDER ALERT] Order KC-ORD-" + order.getId() + " Paid!", ownerEmailHtml);
         }
 
         // Owner console alert

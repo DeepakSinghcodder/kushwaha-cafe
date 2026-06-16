@@ -38,7 +38,13 @@ public class EmailService {
 
         // Fallback to Simulation
         printEmailSimulation(recipientEmail, subject, bodyHtml);
-        return true;
+        return false;
+    }
+
+    public void sendEmailNotificationAsync(String recipientEmail, String subject, String bodyHtml) {
+        new Thread(() -> {
+            sendEmailNotification(recipientEmail, subject, bodyHtml);
+        }).start();
     }
 
     private void printEmailSimulation(String recipientEmail, String subject, String bodyHtml) {

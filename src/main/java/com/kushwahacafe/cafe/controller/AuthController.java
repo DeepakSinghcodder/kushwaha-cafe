@@ -5,6 +5,7 @@ import com.kushwahacafe.cafe.repository.UserRepository;
 import com.kushwahacafe.cafe.service.EmailService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,9 @@ public class AuthController {
 
     @Autowired
     private EmailService emailService;
+
+    @Value("${app.otp.show-on-failure:true}")
+    private boolean showOtpOnFailure;
 
     // --- VIEW: Request Name & Gmail ---
     @GetMapping("/login")
@@ -77,10 +81,21 @@ public class AuthController {
             username, otpCode
         );
 
-        emailService.sendEmailNotification(email, "Login Verification Code - Kushwaha Cafe", otpMailHtml);
+        boolean emailSent = emailService.sendEmailNotification(email, "Login Verification Code - Kushwaha Cafe", otpMailHtml);
 
-        redirectAttributes.addFlashAttribute("flashMessage", "Verification OTP sent to " + email);
-        redirectAttributes.addFlashAttribute("flashCategory", "success");
+        if (emailSent) {
+            redirectAttributes.addFlashAttribute("flashMessage", "Verification OTP sent to " + email);
+            redirectAttributes.addFlashAttribute("flashCategory", "success");
+        } else {
+            if (showOtpOnFailure) {
+                redirectAttributes.addFlashAttribute("flashMessage", "SMTP blocked/failed (Simulation). [Demo Mode] OTP is: " + otpCode);
+                redirectAttributes.addFlashAttribute("flashCategory", "success");
+            } else {
+                redirectAttributes.addFlashAttribute("flashMessage", "SMTP connection failed. Unable to send verification OTP.");
+                redirectAttributes.addFlashAttribute("flashCategory", "error");
+                return "redirect:/login";
+            }
+        }
 
         return "redirect:/login/verify";
     }
@@ -164,7 +179,7 @@ public class AuthController {
                 "<p><b>Kushwaha Cafe Team</b></p>",
                 otpUsername
             );
-            emailService.sendEmailNotification(otpEmail, "Welcome to Kushwaha Cafe!", welcomeHtml);
+            emailService.sendEmailNotificationAsync(otpEmail, "Welcome to Kushwaha Cafe!", welcomeHtml);
         }
 
         // Set standard session attributes
